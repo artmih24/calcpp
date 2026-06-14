@@ -3,7 +3,8 @@
 std::vector<std::string> FixRaw(std::vector<std::string> tokens) {
     std::vector<std::string> newTokens(tokens);
     for (size_t i = 0; i < newTokens.size(); i++) {
-        if ((i > 0) && (newTokens[i] == "-") && ((newTokens[i - 1] == "+") || (newTokens[i - 1] == "-") || (newTokens[i - 1] == "*") || (newTokens[i - 1] == "/"))) {
+        if ((i > 0) && (newTokens[i] == "-") && ((newTokens[i - 1] == "+") || (newTokens[i - 1] == "-") || (newTokens[i - 1] == "*") || (newTokens[i - 1] == "/") || 
+                                                 (newTokens[i - 1] == "sqrt") || (newTokens[i - 1] == "sqr") || (newTokens[i - 1] == "inv") || (newTokens[i - 1] == "cbrt"))) {
             newTokens[i] = "";
             newTokens[i + 1] = "-" + newTokens[i + 1];
         } else if ((i == 0) && (newTokens[i] == "-")) {
@@ -12,6 +13,10 @@ std::vector<std::string> FixRaw(std::vector<std::string> tokens) {
         } else if ((newTokens[i] == "*") && (newTokens[i + 1] == "*")) {
             newTokens[i] = "";
             newTokens[i + 1] = "**";
+        } else if (newTokens[i] == "pi") {
+            newTokens[i] = std::to_string(std::acos(-1.0L));
+        } else if (newTokens[i] == "e") {
+            newTokens[i] = std::to_string(std::exp(1.0L));
         }
     }
     newTokens = RemoveEmptyTokensFrom(newTokens);
@@ -22,7 +27,13 @@ std::vector<std::string> GetTokensFrom(std::string prompt) {
     std::vector<std::string> tokens{};
     std::string tmp{};
     for (auto c : prompt) {
-        if ((c != '+') && (c != '-') && (c != '*') && (c != '/')) {
+        if (tmp + c == "sqrt") {
+            tokens.push_back(tmp + c);
+            tmp.clear();
+        } else if ((tmp == "sqr") || (tmp == "inv") || (tmp == "cbrt")) {
+            tokens.push_back(tmp);
+            tmp = c;
+        } else if ((c != '+') && (c != '-') && (c != '*') && (c != '/')) {
             tmp += c;
         } else {
             if (tmp.size() != 0) {

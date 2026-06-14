@@ -3,6 +3,8 @@
 #include <string>
 #include <vector>
 
+#include <cmath>
+
 std::vector<std::string> FixRaw(std::vector<std::string> tokens);
 
 std::vector<std::string> GetTokensFrom(std::string prompt);

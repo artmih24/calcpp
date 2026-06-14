@@ -62,3 +62,30 @@ std::string ProcessPowersIn(std::string prompt) {
     result = GetResultStringFrom(tokens);
     return result;
 }
+
+std::string ProcessFunctionsIn(std::string prompt) {
+    std::string result{};
+    std::vector<std::string> tokens(GetTokensFrom(prompt));
+    for (size_t i = 0; i < tokens.size() - 1; i++) {
+        if (tokens[i] == "sqrt") {
+            long double op = std::stold(tokens[i + 1]);
+            tokens[i + 1] = std::to_string(std::sqrt(op));
+            tokens[i].clear();
+        } else if (tokens[i] == "cbrt") {
+            long double op = std::stold(tokens[i + 1]);
+            tokens[i + 1] = std::to_string(std::cbrt(op));
+            tokens[i].clear();
+        } else if (tokens[i] == "sqr") {
+            long double op = std::stold(tokens[i + 1]);
+            tokens[i + 1] = std::to_string(op * op);
+            tokens[i].clear();
+        } else if (tokens[i] == "inv") {
+            long double op = std::stold(tokens[i + 1]);
+            tokens[i + 1] = std::to_string(1.0L / op);
+            tokens[i].clear();
+        }
+    }
+    tokens = RemoveEmptyTokensFrom(tokens);
+    result = GetResultStringFrom(tokens);
+    return result;
+}

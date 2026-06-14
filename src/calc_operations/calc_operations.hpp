@@ -9,3 +9,5 @@ std::string ProcessAdditionsAndSubtractionsIn(std::string prompt);
 std::string ProcessMultiplicationsAndDivisionsIn(std::string prompt);
 
 std::string ProcessPowersIn(std::string prompt);
+
+std::string ProcessFunctionsIn(std::string prompt);

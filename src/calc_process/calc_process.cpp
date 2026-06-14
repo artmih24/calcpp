@@ -2,6 +2,7 @@
 
 std::string ProcessSubstring(std::string prompt) {
     std::string result{prompt};
+    result = ProcessFunctionsIn(result);
     result = ProcessPowersIn(result);
     result = ProcessMultiplicationsAndDivisionsIn(result);
     result = ProcessAdditionsAndSubtractionsIn(result);
@@ -20,7 +21,8 @@ std::string ProcessWhole(std::string prompt) {
             if (bracesState > maxBracesDepth) {
                 maxBracesDepth = bracesState;
             }
-        } else if ((i < prompt.size()) && (prompt[i + 1] == ')')) {
+        }
+        if ((i < prompt.size()) && (prompt[i + 1] == ')')) {
             bracesState--;
             bracesDepthsMap.emplace_back(bracesState, i + 1, i + 2);
         }
@@ -62,8 +64,7 @@ std::string ProcessWhole(std::string prompt) {
                     bracesDepthsMap[bracesDepthsMap.size() - 1] = std::make_tuple(-1, 0, 0);
                     bracesDepthsMap[bracesDepthsMap.size() - 2] = std::make_tuple(-1, 0, 0);
 
-
-                    // std::cout << toChangeLength << " - " << result.size() << " -> " << delta << std::endl;
+                    // std::cout << toChangeLength << " - " << result.size() << " -> " << rightPositionsShift << std::endl;
                     // std::cout << subprompt << ": " << toChange << " -> " << result << ": " << prompt << std::endl;
 
                 }   
