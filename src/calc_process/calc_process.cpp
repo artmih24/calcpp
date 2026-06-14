@@ -3,10 +3,8 @@
 std::string ProcessSubstring(std::string prompt) {
     std::string result{prompt};
     result = ProcessPowersIn(result);
-    result = ProcessMultiplicationsIn(result);
-    result = ProcessDivisionsIn(result);
-    result = ProcessAdditionsIn(result);
-    result = ProcessSubtractionsIn(result);
+    result = ProcessMultiplicationsAndDivisionsIn(result);
+    result = ProcessAdditionsAndSubtractionsIn(result);
     return result;
 }
 
