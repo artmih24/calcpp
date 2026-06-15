@@ -27,10 +27,10 @@ std::vector<std::string> FixRaw(std::vector<std::string> tokens)
         } else if ((newTokens[i] == "/") && (newTokens[i + 1] == "/")) {
             newTokens[i] = "";
             newTokens[i + 1] = "//";
-        } else if (newTokens[i] == "pi") {
-            newTokens[i] = std::to_string(std::acos(-1.0L));
-        } else if (newTokens[i] == "e") {
-            newTokens[i] = std::to_string(std::exp(1.0L));
+        } else if (std::string c = "pi"; newTokens[i].find(c) != std::string::npos) {
+            newTokens[i] = MakeStringFrom(std::acos(-1.0L) * ((newTokens[i] == c) ? 1.0L : -1.0L));
+        } else if (std::string c = "e"; newTokens[i].find(c) != std::string::npos) {
+            newTokens[i] = MakeStringFrom(std::exp(1.0L) * ((newTokens[i] == c) ? 1.0L : -1.0L));
         }
     }
     newTokens = RemoveEmptyTokensFrom(newTokens);

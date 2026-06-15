@@ -7,19 +7,24 @@ std::string ProcessAdditionsAndSubtractionsIn(std::string prompt) {
         if (tokens[i] == "+") {
             long double lhs = std::stold(tokens[i - 1]), 
                         rhs = std::stold(tokens[i + 1]);
-            tokens[i + 1] = std::to_string(lhs + rhs);
+            tokens[i + 1] = MakeStringFrom(lhs + rhs);
             tokens[i - 1].clear();
             tokens[i].clear();
         } else if (tokens[i] == "-") {
             long double lhs = std::stold(tokens[i - 1]), 
                         rhs = std::stold(tokens[i + 1]);
-            tokens[i + 1] = std::to_string(lhs - rhs);
+            tokens[i + 1] = MakeStringFrom(lhs - rhs);
             tokens[i - 1].clear();
             tokens[i].clear();
         }
     }
     tokens = RemoveEmptyTokensFrom(tokens);
     result = GetResultStringFrom(tokens);
+    return result;
+}
+
+long double GetSignOf(long double val) {
+    long double result = 1.0L - 2.0L * (val < 0.0L);
     return result;
 }
 
@@ -30,26 +35,26 @@ std::string ProcessMultiplicationsAndDivisionsIn(std::string prompt) {
         if (tokens[i] == "*") {
             long double lhs = std::stold(tokens[i - 1]), 
                         rhs = std::stold(tokens[i + 1]);
-            tokens[i + 1] = std::to_string(lhs * rhs);
+            tokens[i + 1] = MakeStringFrom(lhs * rhs);
             tokens[i - 1].clear();
             tokens[i].clear();
         } else if (tokens[i] == "/") {
             long double lhs = std::stold(tokens[i - 1]), 
                         rhs = std::stold(tokens[i + 1]);
-            tokens[i + 1] = std::to_string(lhs / rhs);
+            tokens[i + 1] = MakeStringFrom(lhs / rhs);
             tokens[i - 1].clear();
             tokens[i].clear();
         } else if (tokens[i] == "%") {
             long long int lhs = std::stold(tokens[i - 1]), 
                           rhs = std::stold(tokens[i + 1]);
-            tokens[i + 1] = std::to_string(lhs % rhs);
+            tokens[i + 1] = MakeStringFrom(lhs % rhs);
             tokens[i - 1].clear();
             tokens[i].clear();
         } else if (tokens[i] == "//") {
             long double lhs = std::stold(tokens[i - 1]), 
                         rhs = std::stold(tokens[i + 1]),
-                        lhsSign = 1.0L - 2.0L * (lhs < 0),
-                        rhsSign = 1.0L - 2.0L * (rhs < 0),
+                        lhsSign = GetSignOf(lhs),
+                        rhsSign = GetSignOf(rhs),
                         res = 0.0L;
             while (lhs / lhsSign > 0) {
                 if ((lhs - lhsSign * std::abs(rhs)) / lhsSign >= 0) {
@@ -60,7 +65,7 @@ std::string ProcessMultiplicationsAndDivisionsIn(std::string prompt) {
                 }
             }
             res *= rhsSign;
-            tokens[i + 1] = std::to_string(res);
+            tokens[i + 1] = MakeStringFrom(res);
             tokens[i - 1].clear();
             tokens[i].clear();
         }
@@ -77,7 +82,7 @@ std::string ProcessPowersIn(std::string prompt) {
         if (tokens[i] == "**") {
             long double lhs = std::stold(tokens[i - 1]), 
                         rhs = std::stold(tokens[i + 1]);
-            tokens[i + 1] = std::to_string(std::pow(lhs, rhs));
+            tokens[i + 1] = MakeStringFrom(std::pow(lhs, rhs));
             tokens[i - 1].clear();
             tokens[i].clear();
         }
@@ -91,37 +96,37 @@ std::string ProcessFunctionsIn(std::string prompt) {
     std::string result{};
     std::vector<std::string> tokens(GetTokensFrom(prompt));
     for (int i = tokens.size() - 1; i >= 0; i--) {
-        if (tokens[i] == "sqrt") {
+        if (std::string f = "sqrt"; tokens[i].find(f) != std::string::npos) {
             long double op = std::stold(tokens[i + 1]);
-            tokens[i] = std::to_string(std::sqrt(op));
+            tokens[i] = MakeStringFrom(std::sqrt(op) * ((tokens[i] == f) ? 1.0L : -1.0L));
             tokens[i + 1].clear();
-        } else if (tokens[i] == "cbrt") {
+        } else if (std::string f = "cbrt"; tokens[i].find(f) != std::string::npos) {
             long double op = std::stold(tokens[i + 1]);
-            tokens[i] = std::to_string(std::cbrt(op));
+            tokens[i] = MakeStringFrom(std::cbrt(op) * ((tokens[i] == f) ? 1.0L : -1.0L));
             tokens[i + 1].clear();
-        } else if (tokens[i] == "sqr") {
+        } else if (std::string f = "sqr"; tokens[i].find(f) != std::string::npos) {
             long double op = std::stold(tokens[i + 1]);
-            tokens[i] = std::to_string(op * op);
+            tokens[i] = MakeStringFrom(op * op * ((tokens[i] == f) ? 1.0L : -1.0L));
             tokens[i + 1].clear();
-        } else if (tokens[i] == "inv") {
+        } else if (std::string f = "inv"; tokens[i].find(f) != std::string::npos) {
             long double op = std::stold(tokens[i + 1]);
-            tokens[i] = std::to_string(1.0L / op);
+            tokens[i] = MakeStringFrom(1.0L / op * ((tokens[i] == f) ? 1.0L : -1.0L));
             tokens[i + 1].clear();
-        } else if (tokens[i] == "abs") {
+        } else if (std::string f = "abs"; tokens[i].find(f) != std::string::npos) {
             long double op = std::stold(tokens[i + 1]);
-            tokens[i] = std::to_string(std::abs(op));
+            tokens[i] = MakeStringFrom(std::abs(op) * ((tokens[i] == f) ? 1.0L : -1.0L));
             tokens[i + 1].clear();
-        } else if (tokens[i] == "sin") {
+        } else if (std::string f = "sin"; tokens[i].find(f) != std::string::npos) {
             long double op = std::stold(tokens[i + 1]);
-            tokens[i] = std::to_string(std::sin(op));
+            tokens[i] = MakeStringFrom(std::sin(op) * ((tokens[i] == f) ? 1.0L : -1.0L));
             tokens[i + 1].clear();
-        } else if (tokens[i] == "cos") {
+        } else if (std::string f = "cos"; tokens[i].find(f) != std::string::npos) {
             long double op = std::stold(tokens[i + 1]);
-            tokens[i] = std::to_string(std::cos(op));
+            tokens[i] = MakeStringFrom(std::cos(op) * ((tokens[i] == f) ? 1.0L : -1.0L));
             tokens[i + 1].clear();
-        } else if (tokens[i] == "tan") {
+        } else if (std::string f = "tan"; tokens[i].find(f) != std::string::npos) {
             long double op = std::stold(tokens[i + 1]);
-            tokens[i] = std::to_string(std::tan(op));
+            tokens[i] = MakeStringFrom(std::tan(op) * ((tokens[i] == f) ? 1.0L : -1.0L));
             tokens[i + 1].clear();
         }
     }

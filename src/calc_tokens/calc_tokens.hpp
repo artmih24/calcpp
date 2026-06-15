@@ -7,6 +7,8 @@
 
 #include <cmath>
 
+#include "calc_string.hpp"
+
 std::ostream& operator<<(std::ostream& os, std::vector<std::string> tokens);
 
 std::vector<std::string> FixRaw(std::vector<std::string> tokens);

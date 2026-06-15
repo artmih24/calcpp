@@ -2,6 +2,7 @@
 
 #include <cmath>
 
+#include "calc_string.hpp"
 #include "calc_tokens.hpp"
 
 std::string ProcessAdditionsAndSubtractionsIn(std::string prompt);

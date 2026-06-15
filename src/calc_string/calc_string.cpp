@@ -50,3 +50,16 @@ std::string DeleteTrailingZerosFrom(std::string str) {
     }
     return result;
 }
+
+std::string MakeStringFrom(long double val) {
+    std::stringstream ss;
+    const auto default_precision{ss.precision()};
+    ss << std::fixed << std::setprecision(std::numeric_limits<long double>::max_digits10) << val << std::setprecision(default_precision);
+    std::string result = ss.str();
+    return result;
+}
+
+std::string MakeStringFrom(long long int val) {
+    std::string result = std::to_string(val);
+    return result;
+}
